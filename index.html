@@ -3,17 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reddit Deep Diver - Archivi</title>
+<title>Reddit Deep Diver</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100">
 
   <div class="max-w-3xl mx-auto p-5">
 
-    <h1 class="text-3xl font-black text-red-500">Reddit Deep Diver</h1>
-    <p class="text-red-400 mb-6">Super Aggressive + Archivi Alternativi</p>
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-black text-red-500">Reddit Deep Diver</h1>
+      <p class="text-red-400">Super Aggressive + Archivi Alternativi</p>
+    </div>
 
-    <!-- RICERCA PRINCIPALE -->
+    <!-- CERCA OVUNQUE -->
     <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6 mb-6">
       <h2 class="font-bold mb-4">Cerca Ovunque</h2>
       
@@ -80,9 +83,23 @@
       <h3 class="font-semibold mb-2 text-orange-400">Deep Templates</h3>
       <div class="space-y-2 text-sm">
         <button onclick="useTemplate('crack OR bypass OR leaked after:2024')" class="w-full text-left bg-slate-900 p-3 rounded-2xl">Software crack / leaked</button>
-        <button onclick="useTemplate('shadowban OR hidden')" class="w-full text-left bg-slate-900 p-3 rounded-2xl">Thread shadowbannati</button>
-        <button onclick="useTemplate('intitle:guide OR tutorial after:2025')" class="w-full text-left bg-slate-900 p-3 rounded-2xl">Guide e tutorial</button>
+        <button onclick="useTemplate('shadowban OR hidden')" class="w-full text-left bg-slate-900 p-3 rounded-2xl">Thread shadowbannati / nascosti</button>
+        <button onclick="useTemplate('intitle:guide OR tutorial after:2025')" class="w-full text-left bg-slate-900 p-3 rounded-2xl">Guide e tutorial avanzati</button>
       </div>
+    </div>
+
+    <!-- GENERATORE QUERY AGGRESSIVE -->
+    <div class="bg-slate-900 border border-red-900/60 rounded-3xl p-6">
+      <h2 class="font-bold text-red-400 mb-3">Generatore Query Aggressive</h2>
+      
+      <input id="aggressiveInput" type="text" placeholder="Es: Mpps software crack bypass" 
+             class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-2xl mb-3">
+
+      <button onclick="generateAggressiveQueries()" class="w-full py-3 bg-red-600 rounded-2xl font-bold">
+        Genera Query Aggressive
+      </button>
+
+      <div id="aggressiveResults" class="hidden mt-4 space-y-2"></div>
     </div>
 
   </div>
@@ -104,27 +121,19 @@ function searchEverywhere() {
   setTimeout(() => window.open(`https://old.reddit.com/search?q=${encodeURIComponent(query)}`, '_blank'), 800);
 }
 
-function searchArchive(type) {
-  const q = document.getElementById('mainQuery').value.trim() || prompt("Inserisci argomento");
-  if (!q) return;
+function searchArchive(archive) {
+  const q = document.getElementById('mainQuery').value.trim();
+  if (!q) return alert("Inserisci qualcosa nel campo sopra");
 
-  if (type === 'oldreddit') {
-    window.open(`https://old.reddit.com/search?q=${encodeURIComponent(q)}`, '_blank');
-  } 
-  else if (type === 'reveddit') {
-    window.open(`https://www.reveddit.com/?q=${encodeURIComponent(q)}`, '_blank');
-  } 
-  else if (type === 'unddit') {
-    window.open(`https://camas.unddit.com/?q=${encodeURIComponent(q)}`, '_blank');
-  } 
-  else if (type === 'googlearchive') {
-    window.open(`https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}+archive+OR+removed`, '_blank');
-  }
+  if (archive === 'oldreddit') window.open(`https://old.reddit.com/search?q=${encodeURIComponent(q)}`, '_blank');
+  if (archive === 'reveddit') window.open(`https://www.reveddit.com/?q=${encodeURIComponent(q)}`, '_blank');
+  if (archive === 'unddit') window.open(`https://camas.unddit.com/?q=${encodeURIComponent(q)}`, '_blank');
+  if (archive === 'googlearchive') window.open(`https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}+removed+OR+archive`, '_blank');
 }
 
 function quickSearch(platform) {
-  const q = document.getElementById('mainQuery').value.trim() || prompt("Inserisci argomento");
-  if (!q) return;
+  const q = document.getElementById('mainQuery').value.trim();
+  if (!q) return alert("Inserisci qualcosa");
 
   if (platform === 'google') window.open(`https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}`, '_blank');
   if (platform === 'yandex') window.open(`https://yandex.com/search/?text=site:reddit.com+${encodeURIComponent(q)}`, '_blank');
@@ -135,6 +144,32 @@ function quickSearch(platform) {
 function useTemplate(template) {
   document.getElementById('mainQuery').value = template;
   searchEverywhere();
+}
+
+function generateAggressiveQueries() {
+  const q = document.getElementById('aggressiveInput').value.trim();
+  if (!q) return alert("Inserisci un argomento");
+
+  const container = document.getElementById('aggressiveResults');
+  container.innerHTML = '';
+  container.classList.remove('hidden');
+
+  const queries = [
+    {name: "Google Deep", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}`},
+    {name: "Yandex", url: `https://yandex.com/search/?text=site:reddit.com+${encodeURIComponent(q)}`},
+    {name: "old.reddit.com", url: `https://old.reddit.com/search?q=${encodeURIComponent(q)}`},
+    {name: "Google + leaked/crack", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}+(leaked+OR+crack)`},
+    {name: "Reveddit (rimossi)", url: `https://www.reveddit.com/?q=${encodeURIComponent(q)}`},
+    {name: "Unddit / Camas", url: `https://camas.unddit.com/?q=${encodeURIComponent(q)}`}
+  ];
+
+  queries.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'bg-slate-800 p-3 rounded-2xl cursor-pointer text-sm';
+    div.innerHTML = item.name;
+    div.onclick = () => window.open(item.url, '_blank');
+    container.appendChild(div);
+  });
 }
 </script>
 </body>
