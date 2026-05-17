@@ -3,96 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reddit Deep Diver Extreme</title>
+<title>Reddit Deep Diver - Cerca Ovunque</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100">
+
   <div class="max-w-3xl mx-auto p-5">
-    <div class="mb-6">
-      <h1 class="text-3xl font-black text-red-500">Reddit Deep Diver <span class="text-xs align-super">EXTREME</span></h1>
-      <p class="text-red-400 text-sm">Generatore di query aggressive per trovare roba nascosta</p>
-    </div>
 
-    <!-- Super Aggressive Mode -->
-    <div class="bg-red-950/30 border border-red-900 rounded-3xl p-6 mb-6">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="font-bold text-red-400">Super Aggressive Mode</h2>
-        <span class="text-xs px-2 py-1 bg-red-600 rounded">RACCOMANDATO</span>
-      </div>
+    <h1 class="text-3xl font-black text-red-500 mb-1">Reddit Deep Diver</h1>
+    <p class="text-red-400 mb-6">Una sola ricerca = Tutto (Aggressive + Multi-piattaforma)</p>
+
+    <!-- INPUT PRINCIPALE -->
+    <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6 mb-6">
+      <h2 class="font-bold mb-4">Cerca Ovunque (Super Aggressive)</h2>
       
-      <input id="aggressiveInput" type="text" placeholder="Es: Mpps software crack bypass" 
-             class="w-full px-4 py-3 bg-slate-900 border border-red-800 rounded-2xl mb-4">
+      <input id="mainQuery" type="text" placeholder="Es: Mpps software crack bypass 2026" 
+             class="w-full px-4 py-3.5 bg-slate-800 border border-slate-600 rounded-2xl mb-4 text-lg">
 
-      <div class="grid grid-cols-2 gap-2 mb-4">
-        <button onclick="addExtremeOperator('leaked')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ leaked / crack</button>
-        <button onclick="addExtremeOperator('hidden')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ hidden / shadow</button>
-        <button onclick="addExtremeOperator('old')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ old.reddit</button>
-        <button onclick="addExtremeOperator('after')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ after:2024</button>
+      <!-- Filtri -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div>
+          <label class="text-xs text-slate-400">Tipo</label>
+          <select id="typeFilter" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-xl text-sm">
+            <option value="all">Tutti</option>
+            <option value="self">Solo Testo</option>
+            <option value="link">Solo Link</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400">Data</label>
+          <select id="dateFilter" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-xl text-sm">
+            <option value="">Qualsiasi</option>
+            <option value="after:2025">Dopo 2025</option>
+            <option value="after:2024">Dopo 2024</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400">Ordina per</label>
+          <select id="sortFilter" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-xl text-sm">
+            <option value="relevance">Rilevanza</option>
+            <option value="top">Top</option>
+            <option value="new">Più recenti</option>
+            <option value="comments">Più commenti</option>
+          </select>
+        </div>
       </div>
 
-      <button onclick="generateExtremeQueries()" 
-              class="w-full py-3.5 bg-red-600 hover:bg-red-700 rounded-2xl font-bold text-lg">
-        GENERA QUERY SUPER AGGRESSIVE
+      <!-- UNICO PULSANTE POTENTE -->
+      <button onclick="searchEverywhere()" 
+              class="w-full py-4 bg-red-600 hover:bg-red-700 rounded-2xl font-bold text-lg">
+        🔍 CERCA OVUNQUE (Super Aggressive)
       </button>
+      <p class="text-center text-xs text-slate-500 mt-2">Apre Google + Yandex + old.reddit + mhhauto con query aggressive</p>
     </div>
 
-    <!-- Template Profondi -->
+    <!-- Azioni Rapide Extra -->
     <div class="mb-6">
-      <h3 class="font-semibold mb-2 text-orange-400">Template Deep (clicca per usare)</h3>
-      <div class="grid grid-cols-1 gap-2 text-sm">
-        <button onclick="useDeepTemplate('crack OR bypass OR leaked')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Software crack / leaked</button>
-        <button onclick="useDeepTemplate('shadowban OR \"non visibile\" OR nascosto')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Thread shadowbannati / nascosti</button>
-        <button onclick="useDeepTemplate('intitle:guide OR tutorial OR \"how to\" after:2025')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Guide e tutorial avanzati</button>
-        <button onclick="useDeepTemplate('selftext:\"non ufficiale\" OR \"versione modificata\"')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Versioni non ufficiali</button>
+      <h3 class="font-semibold mb-2 text-sm">Azioni Rapide</h3>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="quickMulti('google')" class="px-4 py-2 bg-blue-600 rounded-2xl text-sm">Solo Google</button>
+        <button onclick="quickMulti('yandex')" class="px-4 py-2 bg-red-600 rounded-2xl text-sm">Solo Yandex</button>
+        <button onclick="quickMulti('oldreddit')" class="px-4 py-2 bg-slate-700 rounded-2xl text-sm">old.reddit</button>
+        <button onclick="quickMulti('mhhauto')" class="px-4 py-2 bg-orange-600 rounded-2xl text-sm">mhhauto</button>
       </div>
     </div>
 
-    <!-- Risultati -->
-    <div id="extremeResults" class="hidden">
-      <h3 class="font-bold mb-2 text-red-400">Query Aggressive Generate</h3>
-      <div id="extremeList" class="space-y-2 mb-6"></div>
+    <!-- Super Aggressive Generator (opzionale) -->
+    <div class="bg-slate-900 border border-red-900/50 rounded-3xl p-6">
+      <h3 class="font-bold text-red-400 mb-3">Generatore Query Aggressive (Manuale)</h3>
+      <input id="aggressiveInput" type="text" placeholder="Genera query manualmente" 
+             class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-2xl mb-3">
+      <button onclick="generateAggressiveOnly()" class="w-full py-3 bg-red-600 rounded-2xl font-bold">
+        Genera Query Aggressive
+      </button>
+      <div id="aggressiveResults" class="hidden mt-4 space-y-2"></div>
     </div>
 
-    <div class="text-center text-xs text-slate-500">
-      Queste query usano Google + old.reddit per bypassare i limiti di Reddit ufficiale
-    </div>
   </div>
 
 <script>
-function addExtremeOperator(type) {
-  const input = document.getElementById('aggressiveInput');
-  if (type === 'leaked') input.value += ' (crack OR bypass OR leaked)';
-  if (type === 'hidden') input.value += ' (hidden OR shadowban OR "non visibile")';
-  if (type === 'old') input.value = 'site:old.reddit.com ' + input.value;
-  if (type === 'after') input.value += ' after:2024';
+function searchEverywhere() {
+  const q = document.getElementById('mainQuery').value.trim();
+  if (!q) return alert("Inserisci qualcosa da cercare");
+
+  const type = document.getElementById('typeFilter').value;
+  const date = document.getElementById('dateFilter').value;
+  const sort = document.getElementById('sortFilter').value;
+
+  // Costruisce query avanzata
+  let advancedQuery = q;
+  if (type !== "all") advancedQuery += ` self:${type}`;
+  if (date) advancedQuery += ` ${date}`;
+
+  // Apre più piattaforme contemporaneamente
+  const googleUrl = `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(advancedQuery)}`;
+  const yandexUrl = `https://yandex.com/search/?text=site:reddit.com+${encodeURIComponent(advancedQuery)}`;
+  const oldRedditUrl = `https://old.reddit.com/search?q=${encodeURIComponent(advancedQuery)}&sort=${sort}`;
+  const mhhautoUrl = `https://www.google.com/search?q=site:mhhauto.com+${encodeURIComponent(q)}`;
+
+  window.open(googleUrl, '_blank');
+  setTimeout(() => window.open(yandexUrl, '_blank'), 400);
+  setTimeout(() => window.open(oldRedditUrl, '_blank'), 800);
+  setTimeout(() => window.open(mhhautoUrl, '_blank'), 1200);
 }
 
-function useDeepTemplate(template) {
-  document.getElementById('aggressiveInput').value = template;
-  generateExtremeQueries();
+function quickMulti(platform) {
+  const q = document.getElementById('mainQuery').value.trim() || prompt("Inserisci argomento");
+  if (!q) return;
+
+  if (platform === 'google') {
+    window.open(`https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}`, '_blank');
+  } else if (platform === 'yandex') {
+    window.open(`https://yandex.com/search/?text=site:reddit.com+${encodeURIComponent(q)}`, '_blank');
+  } else if (platform === 'oldreddit') {
+    window.open(`https://old.reddit.com/search?q=${encodeURIComponent(q)}`, '_blank');
+  } else if (platform === 'mhhauto') {
+    window.open(`https://www.google.com/search?q=site:mhhauto.com+${encodeURIComponent(q)}`, '_blank');
+  }
 }
 
-function generateExtremeQueries() {
+function generateAggressiveOnly() {
   const q = document.getElementById('aggressiveInput').value.trim();
   if (!q) return alert("Inserisci un argomento");
 
-  const container = document.getElementById('extremeList');
+  const container = document.getElementById('aggressiveResults');
   container.innerHTML = '';
-  document.getElementById('extremeResults').classList.remove('hidden');
+  container.classList.remove('hidden');
 
   const queries = [
-    { label: "Google Deep + site:reddit.com", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}` },
-    { label: "Google + intitle + leaked", url: `https://www.google.com/search?q=site:reddit.com+intitle:(${encodeURIComponent(q)})+(crack+OR+leaked+OR+bypass)` },
-    { label: "old.reddit.com (più grezzo)", url: `https://old.reddit.com/search?q=${encodeURIComponent(q)}&sort=new` },
-    { label: "Google con after:2024", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}+after:2024` },
-    { label: "Bing Deep Search", url: `https://www.bing.com/search?q=site:reddit.com+${encodeURIComponent(q)}+intitle` },
-    { label: "Reddit con selftext", url: `https://www.reddit.com/search/?q=${encodeURIComponent(q)}+selftext:""` }
+    {name: "Google Deep", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}`},
+    {name: "Yandex", url: `https://yandex.com/search/?text=site:reddit.com+${encodeURIComponent(q)}`},
+    {name: "old.reddit", url: `https://old.reddit.com/search?q=${encodeURIComponent(q)}`},
+    {name: "mhhauto", url: `https://www.google.com/search?q=site:mhhauto.com+${encodeURIComponent(q)}`}
   ];
 
   queries.forEach(item => {
     const div = document.createElement('div');
-    div.className = 'bg-slate-900 border border-slate-700 p-4 rounded-2xl cursor-pointer active:bg-slate-800';
-    div.innerHTML = `<div class="font-semibold">${item.label}</div>`;
+    div.className = 'bg-slate-800 p-3 rounded-2xl cursor-pointer';
+    div.innerHTML = item.name;
     div.onclick = () => window.open(item.url, '_blank');
     container.appendChild(div);
   });
