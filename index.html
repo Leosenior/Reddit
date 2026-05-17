@@ -3,128 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reddit Deep Diver</title>
+<title>Reddit Deep Diver Extreme</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100">
   <div class="max-w-3xl mx-auto p-5">
     <div class="mb-6">
-      <h1 class="text-3xl font-black text-red-500">Reddit Deep Diver</h1>
-      <p class="text-slate-400">Trova discussioni nascoste che Reddit ufficiale non ti fa vedere</p>
+      <h1 class="text-3xl font-black text-red-500">Reddit Deep Diver <span class="text-xs align-super">EXTREME</span></h1>
+      <p class="text-red-400 text-sm">Generatore di query aggressive per trovare roba nascosta</p>
     </div>
 
-    <!-- Deep Search Templates -->
-    <div class="bg-slate-900 rounded-3xl border border-red-900/50 p-6 mb-6">
-      <h2 class="font-bold text-red-400 mb-3">Deep Dive Templates (clicca per usare)</h2>
-      <div class="grid grid-cols-1 gap-2">
-        <button onclick="useTemplate('intitle:\"crack\" OR bypass OR leaked after:2024')" 
-                class="text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-2xl text-sm">
-          Software crack / bypass 2024-2026
-        </button>
-        <button onclick="useTemplate('site:reddit.com conspiracy OR \"deep state\" OR shadowban')" 
-                class="text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-2xl text-sm">
-          Conspiracy &amp; shadowban profondi
-        </button>
-        <button onclick="useTemplate('selftext:\"non ufficiale\" OR \"non pubblico\" OR hidden')" 
-                class="text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-2xl text-sm">
-          Thread nascosti / non ufficiali
-        </button>
-        <button onclick="useTemplate('flair:Discussion OR Megathread after:2025')" 
-                class="text-left px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-2xl text-sm">
-          Megathread e discussioni lunghe
-        </button>
+    <!-- Super Aggressive Mode -->
+    <div class="bg-red-950/30 border border-red-900 rounded-3xl p-6 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-bold text-red-400">Super Aggressive Mode</h2>
+        <span class="text-xs px-2 py-1 bg-red-600 rounded">RACCOMANDATO</span>
       </div>
-    </div>
+      
+      <input id="aggressiveInput" type="text" placeholder="Es: Mpps software crack bypass" 
+             class="w-full px-4 py-3 bg-slate-900 border border-red-800 rounded-2xl mb-4">
 
-    <!-- Query Builder Potenziato -->
-    <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6 mb-6">
-      <h2 class="font-bold mb-3">Generatore Query Aggressive</h2>
-      <input id="deepInput" type="text" placeholder="Inserisci argomento (es: Mpps software)" 
-             class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-2xl mb-4">
-
-      <div class="flex flex-wrap gap-2 mb-4">
-        <button onclick="addOperator('intitle')" class="px-3 py-1 text-xs bg-slate-700 rounded-full">+ intitle</button>
-        <button onclick="addOperator('selftext')" class="px-3 py-1 text-xs bg-slate-700 rounded-full">+ selftext</button>
-        <button onclick="addOperator('after2025')" class="px-3 py-1 text-xs bg-slate-700 rounded-full">+ after:2025</button>
-        <button onclick="addOperator('hidden')" class="px-3 py-1 text-xs bg-slate-700 rounded-full">+ hidden / leaked</button>
+      <div class="grid grid-cols-2 gap-2 mb-4">
+        <button onclick="addExtremeOperator('leaked')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ leaked / crack</button>
+        <button onclick="addExtremeOperator('hidden')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ hidden / shadow</button>
+        <button onclick="addExtremeOperator('old')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ old.reddit</button>
+        <button onclick="addExtremeOperator('after')" class="px-3 py-2 text-sm bg-slate-800 rounded-xl">+ after:2024</button>
       </div>
 
-      <button onclick="generateAggressiveQueries()" 
-              class="w-full py-3 bg-red-600 hover:bg-red-700 rounded-2xl font-bold">
-        Genera Query Aggressive
+      <button onclick="generateExtremeQueries()" 
+              class="w-full py-3.5 bg-red-600 hover:bg-red-700 rounded-2xl font-bold text-lg">
+        GENERA QUERY SUPER AGGRESSIVE
       </button>
     </div>
 
-    <!-- Risultati Query -->
-    <div id="results" class="hidden mb-6">
-      <h3 class="font-semibold mb-2 text-orange-400">Query potenti generate</h3>
-      <div id="queryResults" class="space-y-2"></div>
+    <!-- Template Profondi -->
+    <div class="mb-6">
+      <h3 class="font-semibold mb-2 text-orange-400">Template Deep (clicca per usare)</h3>
+      <div class="grid grid-cols-1 gap-2 text-sm">
+        <button onclick="useDeepTemplate('crack OR bypass OR leaked')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Software crack / leaked</button>
+        <button onclick="useDeepTemplate('shadowban OR \"non visibile\" OR nascosto')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Thread shadowbannati / nascosti</button>
+        <button onclick="useDeepTemplate('intitle:guide OR tutorial OR \"how to\" after:2025')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Guide e tutorial avanzati</button>
+        <button onclick="useDeepTemplate('selftext:\"non ufficiale\" OR \"versione modificata\"')" class="text-left bg-slate-900 p-3 rounded-2xl hover:bg-slate-800">Versioni non ufficiali</button>
+      </div>
     </div>
 
-    <!-- Azioni Rapide -->
-    <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6">
-      <h2 class="font-bold mb-3">Azioni Rapide</h2>
-      <div class="flex flex-col gap-3">
-        <button onclick="searchGoogle()" class="py-3 bg-blue-600 hover:bg-blue-700 rounded-2xl font-bold">
-          Cerca su Google (più risultati)
-        </button>
-        <button onclick="searchAlternative()" class="py-3 bg-purple-600 hover:bg-purple-700 rounded-2xl font-bold">
-          Cerca su archivi alternativi
-        </button>
-      </div>
+    <!-- Risultati -->
+    <div id="extremeResults" class="hidden">
+      <h3 class="font-bold mb-2 text-red-400">Query Aggressive Generate</h3>
+      <div id="extremeList" class="space-y-2 mb-6"></div>
+    </div>
+
+    <div class="text-center text-xs text-slate-500">
+      Queste query usano Google + old.reddit per bypassare i limiti di Reddit ufficiale
     </div>
   </div>
 
 <script>
-let currentQuery = "";
-
-function useTemplate(template) {
-  document.getElementById('deepInput').value = template;
-  generateAggressiveQueries();
+function addExtremeOperator(type) {
+  const input = document.getElementById('aggressiveInput');
+  if (type === 'leaked') input.value += ' (crack OR bypass OR leaked)';
+  if (type === 'hidden') input.value += ' (hidden OR shadowban OR "non visibile")';
+  if (type === 'old') input.value = 'site:old.reddit.com ' + input.value;
+  if (type === 'after') input.value += ' after:2024';
 }
 
-function addOperator(type) {
-  const input = document.getElementById('deepInput');
-  if (type === 'intitle') input.value += ' intitle:""';
-  if (type === 'selftext') input.value += ' selftext:""';
-  if (type === 'after2025') input.value += ' after:2025';
-  if (type === 'hidden') input.value += ' (leaked OR hidden OR "non ufficiale")';
+function useDeepTemplate(template) {
+  document.getElementById('aggressiveInput').value = template;
+  generateExtremeQueries();
 }
 
-function generateAggressiveQueries() {
-  const q = document.getElementById('deepInput').value.trim();
-  if (!q) return alert("Inserisci qualcosa");
+function generateExtremeQueries() {
+  const q = document.getElementById('aggressiveInput').value.trim();
+  if (!q) return alert("Inserisci un argomento");
 
-  currentQuery = q;
-  const container = document.getElementById('queryResults');
+  const container = document.getElementById('extremeList');
   container.innerHTML = '';
+  document.getElementById('extremeResults').classList.remove('hidden');
 
   const queries = [
-    {name: "Google Deep + site:reddit.com", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}`},
-    {name: "Google con intitle + after", url: `https://www.google.com/search?q=site:reddit.com+intitle:${encodeURIComponent(q)}+after:2024`},
-    {name: "Reddit avanzato", url: `https://www.reddit.com/search/?q=${encodeURIComponent(q + ' selftext:""')}`},
-    {name: "Bing (a volte meglio)", url: `https://www.bing.com/search?q=site:reddit.com+${encodeURIComponent(q)}`}
+    { label: "Google Deep + site:reddit.com", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}` },
+    { label: "Google + intitle + leaked", url: `https://www.google.com/search?q=site:reddit.com+intitle:(${encodeURIComponent(q)})+(crack+OR+leaked+OR+bypass)` },
+    { label: "old.reddit.com (più grezzo)", url: `https://old.reddit.com/search?q=${encodeURIComponent(q)}&sort=new` },
+    { label: "Google con after:2024", url: `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}+after:2024` },
+    { label: "Bing Deep Search", url: `https://www.bing.com/search?q=site:reddit.com+${encodeURIComponent(q)}+intitle` },
+    { label: "Reddit con selftext", url: `https://www.reddit.com/search/?q=${encodeURIComponent(q)}+selftext:""` }
   ];
 
   queries.forEach(item => {
     const div = document.createElement('div');
-    div.className = 'bg-slate-800 p-4 rounded-2xl cursor-pointer hover:border border-orange-500';
-    div.innerHTML = `<strong>${item.name}</strong>`;
+    div.className = 'bg-slate-900 border border-slate-700 p-4 rounded-2xl cursor-pointer active:bg-slate-800';
+    div.innerHTML = `<div class="font-semibold">${item.label}</div>`;
     div.onclick = () => window.open(item.url, '_blank');
     container.appendChild(div);
   });
-
-  document.getElementById('results').classList.remove('hidden');
-}
-
-function searchGoogle() {
-  if (!currentQuery) currentQuery = document.getElementById('deepInput').value || prompt("Inserisci argomento");
-  window.open(`https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(currentQuery)}+intitle OR selftext`, '_blank');
-}
-
-function searchAlternative() {
-  if (!currentQuery) currentQuery = document.getElementById('deepInput').value || prompt("Inserisci argomento");
-  window.open(`https://old.reddit.com/search?q=${encodeURIComponent(currentQuery)}`, '_blank');
 }
 </script>
 </body>
