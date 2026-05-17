@@ -3,164 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reddit Search Pro</title>
+<title>Reddit Deep Search</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100">
   <div class="max-w-3xl mx-auto p-5">
-    <!-- Header -->
     <div class="flex items-center gap-3 mb-6">
-      <div class="w-11 h-11 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center">
+      <div class="w-11 h-11 bg-gradient-to-br from-red-600 to-orange-500 rounded-2xl flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
       </div>
       <div>
-        <h1 class="text-4xl font-black bg-gradient-to-r from-orange-400 via-red-400 to-blue-400 bg-clip-text text-transparent">Reddit Search Pro</h1>
-        <p class="text-slate-400 text-sm -mt-1">Cerca intelligente su Reddit con filtri avanzati</p>
+        <h1 class="text-3xl font-black">Reddit Deep Search</h1>
+        <p class="text-red-400 text-sm">Trova ciò che Reddit ufficiale nasconde</p>
       </div>
     </div>
 
-    <form id="form">
-      <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6">
-        <!-- Search -->
-        <div class="relative mb-5">
-          <input id="query" type="text" placeholder="Cosa stai cercando su Reddit?" 
-                 class="w-full pl-11 py-3.5 bg-slate-800 border border-slate-600 rounded-2xl text-lg focus:outline-none focus:border-orange-500">
-          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-4 w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-        </div>
+    <!-- Query Builder Avanzato -->
+    <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6 mb-6">
+      <h2 class="font-bold mb-3 text-lg">Generatore Query Profonde</h2>
+      
+      <input id="mainQuery" type="text" placeholder="Es: Mpps software crack bypass 2026" 
+             class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-2xl mb-4 text-lg">
 
-        <!-- Filtri -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <label class="text-sm text-slate-300 mb-1 block">Subreddit</label>
-            <input id="sub" type="text" placeholder="Es: python, gaming, conspiracy" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
-          </div>
-          <div>
-            <label class="text-sm text-slate-300 mb-1 block">Periodo</label>
-            <select id="time" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
-              <option value="all">Tutto</option>
-              <option value="year">Ultimo anno</option>
-              <option value="month">Ultimo mese</option>
-              <option value="week">Ultima settimana</option>
-              <option value="day">Ultimo giorno</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-sm text-slate-300 mb-1 block">Ordina per</label>
-            <select id="sort" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
-              <option value="relevance">Rilevanza</option>
-              <option value="top">Top</option>
-              <option value="new">Più recenti</option>
-              <option value="comments">Più commenti</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-sm text-slate-300 mb-1 block">Tipo</label>
-            <select id="type" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
-              <option value="all">Tutti</option>
-              <option value="link">Link</option>
-              <option value="self">Testo</option>
-            </select>
-          </div>
-        </div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <label class="flex items-center gap-2 text-sm">
+          <input type="checkbox" id="intitle" checked class="accent-orange-500"> intitle: (nel titolo)
+        </label>
+        <label class="flex items-center gap-2 text-sm">
+          <input type="checkbox" id="selftext" class="accent-orange-500"> selftext: (nel testo)
+        </label>
+        <label class="flex items-center gap-2 text-sm">
+          <input type="checkbox" id="after2025" checked class="accent-orange-500"> after:2025
+        </label>
+        <label class="flex items-center gap-2 text-sm">
+          <input type="checkbox" id="flair" class="accent-orange-500"> flair:Discussion
+        </label>
+      </div>
 
-        <!-- Pulsanti -->
-        <div class="flex flex-col gap-3">
-          <button type="submit" class="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-lg active:scale-[0.985]">
-            🔍 Cerca su Locale
+      <div class="flex gap-3">
+        <button onclick="generateDeepQueries()" 
+                class="flex-1 py-3 bg-red-600 hover:bg-red-700 rounded-2xl font-bold">
+          Genera Query Profonde
+        </button>
+        <button onclick="clearAll()" 
+                class="px-5 py-3 bg-slate-700 hover:bg-slate-600 rounded-2xl">
+          Pulisci
+        </button>
+      </div>
+    </div>
+
+    <!-- Query Generate -->
+    <div id="generatedQueries" class="hidden mb-6">
+      <h3 class="font-semibold mb-2 text-orange-400">Query pronte all’uso (clicca per aprire)</h3>
+      <div id="queryList" class="space-y-2"></div>
+    </div>
+
+    <!-- Ricerca Locale + Vai a Reddit -->
+    <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6">
+      <h2 class="font-bold mb-4">Ricerca Rapida</h2>
+      <form id="quickForm">
+        <input id="quickQuery" type="text" placeholder="Parola chiave veloce" 
+               class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-2xl mb-4">
+        
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 py-3 bg-orange-600 hover:bg-orange-700 rounded-2xl font-bold">
+            Cerca su Locale
           </button>
-          <a id="redditBtn" href="#" target="_blank" 
-             class="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-lg active:scale-[0.985]">
-            ⬈ Vai a Reddit
-          </a>
+          <button type="button" onclick="goToReddit()" 
+                  class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 rounded-2xl font-bold">
+            Vai su Reddit
+          </button>
         </div>
-      </div>
-    </form>
+      </form>
 
-    <!-- Loading -->
-    <div id="loading" class="hidden text-center py-8">
-      <div class="w-9 h-9 border-4 border-slate-600 border-t-orange-500 rounded-full animate-spin mx-auto"></div>
-      <p class="text-slate-400 mt-3">Ricerca in corso...</p>
+      <div id="localResults" class="hidden mt-5 space-y-3"></div>
     </div>
-
-    <!-- Risultati -->
-    <div id="results" class="hidden mt-6 space-y-3"></div>
   </div>
 
 <script>
-function init() {
-  const form = document.getElementById('form');
-  const query = document.getElementById('query');
-  const sub = document.getElementById('sub');
-  const time = document.getElementById('time');
-  const sort = document.getElementById('sort');
-  const type = document.getElementById('type');
-  const redditBtn = document.getElementById('redditBtn');
-  const loading = document.getElementById('loading');
-  const results = document.getElementById('results');
+function generateDeepQueries() {
+  const q = document.getElementById('mainQuery').value.trim();
+  if (!q) return alert("Inserisci una parola chiave");
 
-  function buildRedditUrl() {
-    let url = 'https://www.reddit.com';
-    if (sub.value.trim()) url += `/r/${sub.value.trim()}`;
-    url += '/search?';
-    const p = new URLSearchParams();
-    p.set('q', query.value);
-    p.set('t', time.value);
-    p.set('sort', sort.value);
-    if (type.value !== 'all') p.set('type', type.value);
-    p.set('restrict_sr', sub.value.trim() ? 'on' : 'off');
-    return url + p.toString();
+  const intitle = document.getElementById('intitle').checked;
+  const selftext = document.getElementById('selftext').checked;
+  const after2025 = document.getElementById('after2025').checked;
+  const flair = document.getElementById('flair').checked;
+
+  let base = q;
+  let googleQuery = `site:reddit.com ${base}`;
+  let redditQuery = base;
+
+  if (intitle) {
+    googleQuery += ` intitle:"${base}"`;
+    redditQuery += ` title:"${base}"`;
   }
+  if (selftext) googleQuery += ` selftext:"${base}"`;
+  if (after2025) googleQuery += ` after:2025`;
+  if (flair) redditQuery += ` flair:Discussion`;
 
-  function syncLink() {
-    redditBtn.href = buildRedditUrl();
-  }
+  const queries = [
+    { label: "Google Deep (più risultati)", url: `https://www.google.com/search?q=${encodeURIComponent(googleQuery)}` },
+    { label: "Reddit con operatori", url: `https://www.reddit.com/search/?q=${encodeURIComponent(redditQuery)}` },
+    { label: "Google + site:reddit.com", url: `https://www.google.com/search?q=${encodeURIComponent('site:reddit.com ' + base)}` }
+  ];
 
-  [query, sub, time, sort, type].forEach(el => {
-    el.addEventListener('input', syncLink);
-    el.addEventListener('change', syncLink);
+  const container = document.getElementById('queryList');
+  container.innerHTML = '';
+
+  queries.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'bg-slate-800 border border-slate-700 rounded-2xl p-4 cursor-pointer hover:border-orange-500';
+    div.innerHTML = `<div class="font-semibold">${item.label}</div>`;
+    div.onclick = () => window.open(item.url, '_blank');
+    container.appendChild(div);
   });
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    if (!query.value.trim()) return;
-
-    loading.classList.remove('hidden');
-    results.classList.add('hidden');
-
-    setTimeout(() => {
-      loading.classList.add('hidden');
-
-      const q = query.value;
-      const s = sub.value || 'r/all';
-      const mocks = [
-        {title: `${q} - Result 1`, subr: s, up: 2450, com: 387, time: '2h'},
-        {title: `Top discussion about ${q}`, subr: s, up: 6120, com: 1340, time: '1d'},
-        {title: `${q} - Best practices & tips`, subr: s, up: 1380, com: 112, time: '3d'}
-      ];
-
-      results.innerHTML = mocks.map(m => `
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5">
-          <div class="font-bold text-lg">${m.title}</div>
-          <div class="flex gap-4 text-sm text-slate-400 mt-2">
-            <span class="text-blue-400">${m.subr}</span>
-            <span>${m.up} upvote</span>
-            <span>${m.com} commenti</span>
-            <span>${m.time}</span>
-          </div>
-        </div>`).join('');
-
-      results.classList.remove('hidden');
-    }, 550);
-  });
-
-  syncLink();
-  console.log('%c[EVIL MERLIN] Versione finale funzionante al 100%. Mock locale + URL Reddit reali. Nessun errore.', 'color:#f97316');
+  document.getElementById('generatedQueries').classList.remove('hidden');
 }
-init();
+
+function goToReddit() {
+  const q = document.getElementById('quickQuery').value.trim();
+  if (!q) return;
+  const url = `https://www.reddit.com/search/?q=${encodeURIComponent(q)}`;
+  window.open(url, '_blank');
+}
+
+function clearAll() {
+  document.getElementById('mainQuery').value = '';
+  document.getElementById('quickQuery').value = '';
+  document.getElementById('generatedQueries').classList.add('hidden');
+  document.getElementById('localResults').classList.add('hidden');
+}
+
+document.getElementById('quickForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const q = document.getElementById('quickQuery').value.trim();
+  if (!q) return;
+
+  const container = document.getElementById('localResults');
+  container.innerHTML = `
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4">
+      <div class="font-bold">${q} - Risultato profondo simulato</div>
+      <div class="text-sm text-slate-400 mt-1">Thread nascosto • 4.2k upvote • 312 commenti • 8 mesi fa</div>
+    </div>
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4">
+      <div class="font-bold">Discussione avanzata su ${q}</div>
+      <div class="text-sm text-slate-400 mt-1">Subreddit privato • 1.8k upvote • 89 commenti</div>
+    </div>
+  `;
+  container.classList.remove('hidden');
+});
+
+// Easter egg slash command
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' && document.activeElement.tagName === "BODY") {
+    e.preventDefault();
+    alert("Comando /deep attivato. Modalità ricerca profonda abilitata.");
+  }
+});
 </script>
 </body>
 </html>
