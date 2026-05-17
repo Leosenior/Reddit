@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reddit Search Pro</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <div class="max-w-3xl mx-auto p-4">
+    <!-- Header con logo come nelle tue immagini -->
+    <div class="flex items-center gap-3 mb-6 pt-4">
+      <div class="w-11 h-11 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-4xl font-black bg-gradient-to-r from-orange-400 via-red-400 to-blue-400 bg-clip-text text-transparent">Reddit Search Pro</h1>
+        <p class="text-slate-400 -mt-1">Cerca intelligente su Reddit con filtri avanzati</p>
+      </div>
+    </div>
+
+    <!-- FORM COMPLETO visibile subito (questo è "l'altro" che vuoi) -->
+    <form id="search-form">
+      <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6">
+        <!-- Search bar -->
+        <div class="relative mb-5">
+          <input id="search-input" type="text" placeholder="Cosa stai cercando su Reddit?" 
+                 class="w-full pl-11 py-3.5 bg-slate-800 border border-slate-600 rounded-2xl text-lg focus:border-orange-500 outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-4 w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+
+        <!-- Filtri -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label class="block text-sm text-slate-300 mb-1.5">Subreddit</label>
+            <input id="subreddit-input" type="text" placeholder="Es: python, gaming" 
+                   class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
+          </div>
+          <div>
+            <label class="block text-sm text-slate-300 mb-1.5">Periodo</label>
+            <select id="timeframe-select" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
+              <option value="all">Tutto</option>
+              <option value="year">Ultimo anno</option>
+              <option value="month">Ultimo mese</option>
+              <option value="week">Ultima settimana</option>
+              <option value="day">Ultimo giorno</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-slate-300 mb-1.5">Ordina per</label>
+            <select id="sort-select" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
+              <option value="relevance">Rilevanza</option>
+              <option value="top">Top</option>
+              <option value="new">Più recenti</option>
+              <option value="comments">Più commenti</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-slate-300 mb-1.5">Tipo</label>
+            <select id="type-select" class="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl">
+              <option value="all">Tutti</option>
+              <option value="link">Link</option>
+              <option value="self">Testo</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pulsanti esatti come nelle immagini -->
+        <div class="flex flex-col gap-3">
+          <button type="submit" 
+                  class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            Cerca su Locale
+          </button>
+          
+          <a id="reddit-link" href="#" target="_blank"
+             class="w-full py-3.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2v-2m2-4l4 4m0 0l4-4m-4 4V4"/>
+            </svg>
+            Vai a Reddit
+          </a>
+        </div>
+      </div>
+    </form>
+
+    <!-- Loading -->
+    <div id="loading" class="hidden text-center py-8">
+      <div class="w-9 h-9 border-4 border-slate-600 border-t-orange-500 rounded-full animate-spin mx-auto"></div>
+      <p class="text-slate-400 mt-3">Ricerca in corso...</p>
+    </div>
+
+    <!-- Risultati -->
+    <div id="results" class="hidden mt-6 space-y-3"></div>
+  </div>
+
+<script>
+// Tailwind + stato
+function init() {
+  const form = document.getElementById('search-form');
+  const searchInput = document.getElementById('search-input');
+  const subInput = document.getElementById('subreddit-input');
+  const timeSel = document.getElementById('timeframe-select');
+  const sortSel = document.getElementById('sort-select');
+  const typeSel = document.getElementById('type-select');
+  const redditLink = document.getElementById('reddit-link');
+  const loading = document.getElementById('loading');
+  const results = document.getElementById('results');
+
+  let q = '', sub = '', t = 'all', sort = 'relevance', type = 'all';
+
+  function buildUrl() {
+    let url = 'https://www.reddit.com';
+    if (sub.trim()) url += `/r/${sub.trim()}`;
+    url += '/search?';
+    const p = new URLSearchParams();
+    p.set('q', q);
+    p.set('t', t);
+    p.set('sort', sort);
+    if (type !== 'all') p.set('type', type);
+    p.set('restrict_sr', sub.trim() ? 'on' : 'off');
+    return url + p.toString();
+  }
+
+  function sync() {
+    q = searchInput.value;
+    sub = subInput.value;
+    t = timeSel.value;
+    sort = sortSel.value;
+    type = typeSel.value;
+    redditLink.href = buildUrl();
+  }
+
+  [searchInput, subInput, timeSel, sortSel, typeSel].forEach(el => {
+    el.addEventListener('input', sync);
+    el.addEventListener('change', sync);
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    sync();
+    if (!q.trim()) return;
+
+    loading.classList.remove('hidden');
+    results.classList.add('hidden');
+
+    setTimeout(() => {
+      loading.classList.add('hidden');
+      const mocks = [
+        {title: `${q} - Result 1`, subr: sub || 'r/all', up: 2400, com: 342, ago: '2h'},
+        {title: `Top discussion about ${q}`, subr: sub || 'r/AskReddit', up: 5800, com: 1203, ago: '1d'},
+        {title: `${q} - Best practices`, subr: sub || 'r/learnprogramming', up: 1240, com: 89, ago: '3d'}
+      ];
+      results.innerHTML = mocks.map(m => `
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5">
+          <div class="font-bold text-lg">${m.title}</div>
+          <div class="text-sm text-slate-400 mt-1">${m.subr} • ${m.up} upvote • ${m.com} commenti • ${m.ago}</div>
+        </div>`).join('');
+      results.classList.remove('hidden');
+    }, 600);
+  });
+
+  // Inizializza link
+  sync();
+  console.log('%c[EVIL MERLIN] Versione completa con form pieno caricata. Questo è "l'altro" che volevi.', 'color:#f97316');
+}
+init();
+</script>
+</body>
+</html>
