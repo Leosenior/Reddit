@@ -11,9 +11,9 @@
   <div class="max-w-3xl mx-auto p-5">
 
     <h1 class="text-3xl font-black text-red-500">Reddit Deep Diver</h1>
-    <p class="text-red-400 mb-6">Ricerca Reddit + Ricerca Approfondita su Tutto Internet</p>
+    <p class="text-red-400 mb-6">Ricerca Reddit + Ricerca Approfondita Potenziata</p>
 
-    <!-- RICERCA RAPIDA + FILTRI -->
+    <!-- RICERCA RAPIDA REDDIT -->
     <div class="bg-slate-900 rounded-3xl border border-slate-700 p-6 mb-6">
       <h2 class="font-bold mb-4">Ricerca Rapida (Reddit)</h2>
       
@@ -54,16 +54,23 @@
       </div>
     </div>
 
-    <!-- RICERCA APPROFONDITA SU TUTTO INTERNET (NUOVA) -->
-    <div class="bg-red-950/30 border border-red-900 rounded-3xl p-6 mb-6">
+    <!-- RICERCA APPROFONDITA SU TUTTO INTERNET (POTENZIATA) -->
+    <div class="bg-red-950/40 border border-red-900 rounded-3xl p-6 mb-6">
       <h2 class="font-bold text-red-400 mb-2">Ricerca Approfondita su Tutto Internet</h2>
-      <p class="text-sm text-slate-400 mb-4">Non limitata solo a Reddit. Cerca in modo più profondo su tutto il web.</p>
-      
-      <button onclick="deepWebSearch()" 
+      <p class="text-sm text-slate-400 mb-4">Cerca in modo profondo su tutto il web (non solo Reddit)</p>
+
+      <!-- Opzioni rapide -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        <button onclick="setDeepMode('leaked')" class="px-3 py-1 bg-red-600 rounded-full text-xs">Leaked / Crack</button>
+        <button onclick="setDeepMode('guide')" class="px-3 py-1 bg-orange-600 rounded-full text-xs">Guide &amp; Tutorial</button>
+        <button onclick="setDeepMode('hidden')" class="px-3 py-1 bg-purple-600 rounded-full text-xs">Hidden / Shadow</button>
+        <button onclick="setDeepMode('discussion')" class="px-3 py-1 bg-blue-600 rounded-full text-xs">Discussioni</button>
+      </div>
+
+      <button onclick="deepWebSearchAdvanced()" 
               class="w-full py-4 bg-red-600 hover:bg-red-700 rounded-2xl font-bold text-lg">
         CERCA APPROFONDITA SU TUTTO INTERNET
       </button>
-      <p class="text-center text-xs text-slate-500 mt-2">Apre Google + Yandex con ricerca ampia e aggressiva</p>
     </div>
 
     <!-- ARCHIVI ALTERNATIVI -->
@@ -71,36 +78,30 @@
       <h2 class="font-bold text-red-400 mb-3">Archivi Alternativi</h2>
       <div class="grid grid-cols-2 gap-3">
         <button onclick="searchArchive('oldreddit')" class="py-3 bg-slate-700 rounded-2xl font-bold">old.reddit.com</button>
-        <button onclick="searchArchive('reveddit')" class="py-3 bg-purple-600 rounded-2xl font-bold">Reveddit (rimossi)</button>
+        <button onclick="searchArchive('reveddit')" class="py-3 bg-purple-600 rounded-2xl font-bold">Reveddit</button>
         <button onclick="searchArchive('unddit')" class="py-3 bg-orange-600 rounded-2xl font-bold">Unddit / Camas</button>
         <button onclick="searchArchive('googlearchive')" class="py-3 bg-blue-600 rounded-2xl font-bold">Google Archivi</button>
-      </div>
-    </div>
-
-    <!-- AZIONI RAPIDE -->
-    <div class="mb-6">
-      <h3 class="font-semibold mb-2 text-sm">Azioni Rapide</h3>
-      <div class="flex flex-wrap gap-2">
-        <button onclick="quickSearch('google')" class="px-4 py-2 bg-blue-600 rounded-2xl text-sm">Google</button>
-        <button onclick="quickSearch('yandex')" class="px-4 py-2 bg-red-600 rounded-2xl text-sm">Yandex</button>
-        <button onclick="quickSearch('mhhauto')" class="px-4 py-2 bg-orange-600 rounded-2xl text-sm">mhhauto</button>
       </div>
     </div>
 
     <!-- GENERATORE QUERY AGGRESSIVE -->
     <div class="bg-slate-900 border border-red-900/60 rounded-3xl p-6">
       <h2 class="font-bold text-red-400 mb-3">Generatore Query Aggressive</h2>
-      <input id="aggressiveInput" type="text" placeholder="Es: Mpps software crack bypass" 
-             class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-2xl mb-3">
-      <button onclick="generateAggressiveQueries()" class="w-full py-3 bg-red-600 rounded-2xl font-bold">
-        Genera Query Aggressive
-      </button>
+      <input id="aggressiveInput" type="text" placeholder="Es: Mpps software" class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-2xl mb-3">
+      <button onclick="generateAggressiveQueries()" class="w-full py-3 bg-red-600 rounded-2xl font-bold">Genera Query</button>
       <div id="aggressiveResults" class="hidden mt-4 space-y-2"></div>
     </div>
 
   </div>
 
 <script>
+let deepMode = '';
+
+function setDeepMode(mode) {
+  deepMode = mode;
+  alert(`Modalità impostata: ${mode}`);
+}
+
 function searchWithFilters() {
   const q = document.getElementById('mainQuery').value.trim();
   if (!q) return alert("Inserisci qualcosa");
@@ -111,7 +112,6 @@ function searchWithFilters() {
   let query = q;
   if (type !== "all") query += ` self:${type}`;
   if (date) query += ` ${date}`;
-
   window.open(`https://www.reddit.com/search/?q=${encodeURIComponent(query)}&sort=${sort}`, '_blank');
 }
 
@@ -121,35 +121,32 @@ function openOnReddit() {
   window.open(`https://www.reddit.com/search/?q=${encodeURIComponent(q)}`, '_blank');
 }
 
-function deepWebSearch() {
+function deepWebSearchAdvanced() {
   const q = document.getElementById('mainQuery').value.trim();
   if (!q) return alert("Inserisci qualcosa da cercare");
 
-  // Ricerca ampia su tutto internet (non solo Reddit)
-  const googleQuery = `${q} (guide OR tutorial OR crack OR bypass OR leaked OR hidden OR discussion)`;
-  const yandexQuery = `${q} (guide OR tutorial OR crack OR bypass OR leaked)`;
+  let extra = '';
+  if (deepMode === 'leaked') extra = '(crack OR bypass OR leaked OR "non ufficiale")';
+  else if (deepMode === 'guide') extra = '(guide OR tutorial OR "how to")';
+  else if (deepMode === 'hidden') extra = '(hidden OR shadowban OR "non visibile")';
+  else if (deepMode === 'discussion') extra = '(discussion OR thread OR megathread)';
 
-  window.open(`https://www.google.com/search?q=${encodeURIComponent(googleQuery)}`, '_blank');
-  setTimeout(() => window.open(`https://yandex.com/search/?text=${encodeURIComponent(yandexQuery)}`, '_blank'), 500);
+  const finalQuery = extra ? `${q} ${extra}` : q;
+
+  // Apre su Google e Yandex in modo più ampio
+  window.open(`https://www.google.com/search?q=${encodeURIComponent(finalQuery)}`, '_blank');
+  setTimeout(() => {
+    window.open(`https://yandex.com/search/?text=${encodeURIComponent(finalQuery)}`, '_blank');
+  }, 600);
 }
 
 function searchArchive(archive) {
   const q = document.getElementById('mainQuery').value.trim();
   if (!q) return alert("Inserisci qualcosa");
-
   if (archive === 'oldreddit') window.open(`https://old.reddit.com/search?q=${encodeURIComponent(q)}`, '_blank');
   if (archive === 'reveddit') window.open(`https://www.reveddit.com/?q=${encodeURIComponent(q)}`, '_blank');
   if (archive === 'unddit') window.open(`https://camas.unddit.com/?q=${encodeURIComponent(q)}`, '_blank');
   if (archive === 'googlearchive') window.open(`https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}+removed`, '_blank');
-}
-
-function quickSearch(platform) {
-  const q = document.getElementById('mainQuery').value.trim();
-  if (!q) return alert("Inserisci qualcosa");
-
-  if (platform === 'google') window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank');
-  if (platform === 'yandex') window.open(`https://yandex.com/search/?text=${encodeURIComponent(q)}`, '_blank');
-  if (platform === 'mhhauto') window.open(`https://www.google.com/search?q=site:mhhauto.com+${encodeURIComponent(q)}`, '_blank');
 }
 
 function generateAggressiveQueries() {
@@ -161,8 +158,8 @@ function generateAggressiveQueries() {
   container.classList.remove('hidden');
 
   const queries = [
-    {name: "Google Deep", url: `https://www.google.com/search?q=${encodeURIComponent(q)}+(guide+OR+tutorial+OR+crack+OR+leaked)`},
-    {name: "Yandex", url: `https://yandex.com/search/?text=${encodeURIComponent(q)}+(crack+OR+bypass+OR+leaked)`},
+    {name: "Google Deep", url: `https://www.google.com/search?q=${encodeURIComponent(q)}+(crack+OR+leaked+OR+guide)`},
+    {name: "Yandex", url: `https://yandex.com/search/?text=${encodeURIComponent(q)}+(bypass+OR+leaked)`},
     {name: "Google + after 2024", url: `https://www.google.com/search?q=${encodeURIComponent(q)}+after:2024`},
     {name: "Reveddit", url: `https://www.reveddit.com/?q=${encodeURIComponent(q)}`}
   ];
